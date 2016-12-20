@@ -42,17 +42,17 @@ public class ProjectService {
     profile.setName("base");
     profile.setAccess(Access.MASTER);
     profileService.insert(profile);
-    profile.setName("test");
-    profile.setAccess(Access.DEVELOPER);
-    profileService.insert(profile);
-    profile.setName("dev");
-    profile.setAccess(Access.DEVELOPER);
-    profileService.insert(profile);
-    profile.setName("product");
-    profile.setAccess(Access.MASTER);
+//    profile.setName("test");
+//    profile.setAccess(Access.DEVELOPER);
+//    profileService.insert(profile);
+//    profile.setName("dev");
+//    profile.setAccess(Access.DEVELOPER);
+//    profileService.insert(profile);
+//    profile.setName("product");
+//    profile.setAccess(Access.MASTER);
     //为product这个profile生成SecretKey
-    profile.setSecretKey(RandomStringUtils.randomAlphanumeric(16));
-    profileService.insert(profile);
+//    profile.setSecretKey(RandomStringUtils.randomAlphanumeric(16));
+//    profileService.insert(profile);
     return result;
   }
 
@@ -96,6 +96,7 @@ public class ProjectService {
   public void delete(int id) {
     // TODO 删除所有的profile，config, dependency，还要检查这个项目有没有被其它的项目依赖到
     // 目前检查的逻辑在Controller里
+	dependencyService.deleteDependencyByProjectId(id); //删除当前工程的依赖
     projectMapper.deleteByPrimaryKey(id);
   }
 }

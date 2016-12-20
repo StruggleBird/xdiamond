@@ -15,10 +15,10 @@ public class XDiamondConfigTest {
 
 	@Test
 	public void test() throws InterruptedException, ExecutionException, TimeoutException {
-		String profile = "dev";
-		String version = "sss";
-		String artifactId = "sss";
-		String groupId = "sss";
+		String profile = "base";
+		String version = "3.8.0";
+		String artifactId = "yunnex-mod-foundation";
+		String groupId = "yunnex";
 		String secretKey = "";
 
 		String serverHost = "127.0.0.1";

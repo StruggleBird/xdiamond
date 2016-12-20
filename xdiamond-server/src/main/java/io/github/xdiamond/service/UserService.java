@@ -2,9 +2,11 @@ package io.github.xdiamond.service;
 
 import io.github.xdiamond.constants.Access;
 import io.github.xdiamond.domain.Group;
+import io.github.xdiamond.domain.GroupExample;
 import io.github.xdiamond.domain.User;
 import io.github.xdiamond.domain.UserExample;
 import io.github.xdiamond.domain.UserGroup;
+import io.github.xdiamond.domain.UserGroupExample;
 import io.github.xdiamond.persistence.GroupMapper;
 import io.github.xdiamond.persistence.UserGroupMapper;
 import io.github.xdiamond.persistence.UserMapper;
@@ -73,7 +75,11 @@ public class UserService {
   }
 
   public int delete(Integer id) {
-    return userMapper.deleteByPrimaryKey(id);
+	int row = userMapper.deleteByPrimaryKey(id);
+	UserGroupExample example = new UserGroupExample();
+	example.createCriteria().andUserIdEqualTo(id);
+	userGroupMapper.deleteByExample(example );
+    return row;
   }
 
   public User query(String userName) {

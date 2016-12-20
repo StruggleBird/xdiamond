@@ -33,3 +33,4 @@ overridedb.*
 *.jar
 .DS_Store
 .factorypath
+/xdiamond-server/catalina.base_IS_UNDEFINED

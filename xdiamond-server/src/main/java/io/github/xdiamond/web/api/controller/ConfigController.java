@@ -67,11 +67,17 @@ public class ConfigController {
     executorService.execute(new Runnable() {
       @Override
       public void run() {
+    	  //for transaction isolation,此处如果立即执行可能会拿到老的结果，导致没有检测到数据变更
+    	try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
         Profile profile = profileService.select(config.getProfileId());
         // 用一个Map来做去重处理
         Map<Integer, Project> projectMap = Maps.newLinkedHashMap();
         notifyConfigChanged(profile.getProjectId(), projectMap);
 
+        //对所有下游项目包括自己进行客户端通知
         for (Project project : projectMap.values()) {
           XDiamondServerHandler.notifyConfigChanged(project.getGroupId(), project.getArtifactId(),
               project.getVersion());
@@ -80,7 +86,12 @@ public class ConfigController {
     });
   }
 
-  private void notifyConfigChanged(int projectId, Map<Integer, Project> projectMap) {
+  /**
+   * 递归出所有下游项目
+ * @param projectId
+ * @param projectMap
+ */
+private void notifyConfigChanged(int projectId, Map<Integer, Project> projectMap) {
     Project project = projectService.select(projectId);
     projectMap.put(projectId, project);
     // 要递归查出所有的下游的项目。上游的项目配置修改了，则要通知所有下游的项目
